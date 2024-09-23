@@ -9,9 +9,9 @@ const transaction_id = "ad5f65ea-0c31-4027-9d6e-5660246651f5";
 const city_code = "std:080";
 const country_code = "IND";
 const version = "2.0.2";
-const ttl = "P1D";
-
-
+const ttl = "PT30S";
+const domain = "nic2004:52110";
+const timeStamp = new Date().toISOString();
 
 let product_pipeline = async () => {
     let pipeline = [
@@ -55,29 +55,7 @@ let product_pipeline = async () => {
                 'id': {
                     '$toString': '$_id'
                 },
-                'time': {
-                    'label': 'enable',
-                    'timestamp': new Date()
-                },
-                'descriptor': {
-                    'name': '$name',
-                    'code': '$EANCode',
-                    'Symbol': {
-                        '$arrayElemAt': [
-                            '$images', 0
-                        ]
-                    },
-                    'short_desc': '$description',
-                    'long_desc': '$description',
-                    'images': '$images'
-                },
                 'quantity': {
-                    'unitized': {
-                        'measure': {
-                            'unit': 'kilogram',
-                            'value': '$weight'
-                        }
-                    },
                     'available': {
                         'count': {
                             '$toString': '100'
@@ -89,6 +67,8 @@ let product_pipeline = async () => {
                         }
                     }
                 },
+                'category_id': "Hair Care",
+                '@ondc/org/contact_details_consumer_care': 'Sailendra Nagvani,tech@buyume.io,8826345311',
                 'price': {
                     'currency': 'INR',
                     'value': {
@@ -98,60 +78,26 @@ let product_pipeline = async () => {
                         '$toString': '$mrp'
                     }
                 },
-                'category_id': '$categoryId',
-                'fulfillment_id': '1',
-                'location_id': '655c606924ceb7a7991b3c18',
-                '@ondc/org/returnable': 'false',
-                '@ondc/org/cancellable': 'false',
-                '@ondc/org/return_window': 'P2D',
-                '@ondc/org/seller_pickup_return': 'false',
-                '@ondc/org/time_to_ship': 'PT1H',
-                '@ondc/org/available_on_cod': 'true',
-                '@ondc/org/contact_details_consumer_care': 'Sailendra Nagvani,tech@buyume.io,8826345311',
-                '@ondc/org/statutory_reqs_packaged_commodities': {
-                    'manufacturer_or_packer_name': '$brand',
-                    'manufacturer_or_packer_address': 'Plot No. 47, Okhla Phase 3 Near Bada Business, Delhi, 110020',
-                    'common_or_generic_name_of_commodity': '$subcategory',
-                    'net_quantity_or_measure_of_commodity_in_pkg': {
-                        '$concat': [
-                            {
-                                '$toString': '$weight'
-                            }, ' (in kilogram)'
+                'descriptor': {
+                    'name': '$name',
+                    'code': '$EANCode',
+                    'symbol': {
+                        '$arrayElemAt': [
+                            '$images', 0
                         ]
                     },
-                    'month_year_of_manufacture_packing_import': 'Yes'
+                    'short_desc': '$description',
+                    'long_desc': '$description',
+                    'images': '$images'
                 },
-                'tags': [
-                    {
-                        'code': 'origin',
-                        'list': [
-                            {
-                                'code': 'country',
-                                'value': 'IND'
-                            }
-                        ]
-                    }, {
-                        'code': 'image',
-                        'list': [
-                            {
-                                'code': 'url',
-                                'value': {
-                                    '$arrayElemAt': [
-                                        '$images', 0
-                                    ]
-                                }
-                            }
-                        ]
-                    }, {
-                        'code': 'attribute',
-                        'list': [
-                            {
-                                'code': 'brand',
-                                'value': '$brand'
-                            }
-                        ]
-                    }
-                ]
+                // '@ondc/org/returnable': 'false',
+                'location_id': 'SALON_ADDRESS',
+                'fulfillment_id': '1',
+                // '@ondc/org/cancellable': 'false',
+                // '@ondc/org/available_on_cod': 'true',
+                '@ondc/org/time_to_ship': 'P1D',
+                '@ondc/org/return_window': 'P2D',
+                // '@ondc/org/seller_pickup_return': 'false'
             }
         }, {
             '$limit': 20
@@ -165,7 +111,7 @@ let seller_pipeline = async () => {
             '$match': {
                 '_id': {
                     '$in': [
-                        new ObjectId('62a03165ced1fb651ad9230c'), new ObjectId('61f51a65ee7da1d1e61bd7b3')
+                        new ObjectId('62a03165ced1fb651ad9230c'), new ObjectId('61073b09e022eac709348d46')
                     ]
                 }
             }
@@ -183,37 +129,39 @@ let seller_pipeline = async () => {
                 'id': {
                     '$toString': '$_id'
                 },
-                // 'time': {
-                //     'label': 'enable',
-                //     'timestamp': new Date()
-                // },
+                'time': {
+                    'label': 'enable',
+                    'timestamp': timeStamp
+                },
                 'descriptor': {
                     'name': '$businessName',
-                    'Symbol': '$profilePic',
+                    'symbol': '$profilePic',
                     'short_desc': 'Salon',
                     'long_desc': 'Salon',
                     'images': [
                         '$profilePic'
                     ],
-                    'tags': [
-                        {
-                            'code': 'bpp_terms',
-                            'list': [
-                                {
-                                    'code': 'np_type',
-                                    'value': 'MSN'
-                                }, {
-                                    'code': 'accept_bap_terms',
-                                    'value': 'Y'
-                                }, {
-                                    'code': 'collect_payment',
-                                    'value': 'Y'
-                                }
-                            ]
-                        }
-                    ]
+                    // tags: [
+                    //   {
+                    //     code: "bpp_terms",
+                    //     list: [
+                    //       {
+                    //         code: "np_type",
+                    //         value: "MSN"
+                    //       },
+                    //       {
+                    //         code: "accept_bap_terms",
+                    //         value: "Y"
+                    //       },
+                    //       {
+                    //         code: "collect_payment",
+                    //         value: "Y"
+                    //       }
+                    //     ]
+                    //   }
+                    // ]
                 },
-                'ttl': 'P1D',
+                'ttl': ttl,
                 'locations': [
                     {
                         'id': 'SALON_ADDRESS',
@@ -236,10 +184,10 @@ let seller_pipeline = async () => {
                         },
                         'address': {
                             'street': '$permanentSalonAddress.address1',
-                            'locality': '$permanentSalonAddress.landmark',
                             'city': '$permanentSalonAddress.city',
                             'area_code': '$permanentSalonAddress.postalCode',
-                            'state': '$permanentSalonAddress.state'
+                            'state': '$permanentSalonAddress.state',
+                            // locality: "$permanentSalonAddress.landmark",
                         },
                         'circle': {
                             'gps': {
@@ -265,69 +213,8 @@ let seller_pipeline = async () => {
                             }
                         },
                         'time': {
-                            'label': 'enable',
-                            'timestamp': new Date(),
-                            'days': '1,2,3,4,5,6,7',
-                            'schedule': {
-                                'holidays': []
-                            },
-                            'range': {
-                                'start': '0800',
-                                'end': '2300'
-                            }
-                        }
-                    }, {
-                        'id': 'ORDER_ADDRESS',
-                        'gps': {
-                            '$concat': [
-                                {
-                                    '$toString': {
-                                        '$arrayElemAt': [
-                                            '$downloadCoordinates.coordinates', 1
-                                        ]
-                                    }
-                                }, ',', {
-                                    '$toString': {
-                                        '$arrayElemAt': [
-                                            '$downloadCoordinates.coordinates', 0
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        'address': {
-                            'street': '$orderAddress.address1',
-                            'locality': '$orderAddress.landmark',
-                            'city': '$orderAddress.city',
-                            'area_code': '$orderAddress.postalCode',
-                            'state': '$orderAddress.state'
-                        },
-                        'circle': {
-                            'gps': {
-                                '$concat': [
-                                    {
-                                        '$toString': {
-                                            '$arrayElemAt': [
-                                                '$downloadCoordinates.coordinates', 1
-                                            ]
-                                        }
-                                    }, ',', {
-                                        '$toString': {
-                                            '$arrayElemAt': [
-                                                '$downloadCoordinates.coordinates', 0
-                                            ]
-                                        }
-                                    }
-                                ]
-                            },
-                            'radius': {
-                                'unit': 'km',
-                                'value': '10'
-                            }
-                        },
-                        'time': {
-                            'label': 'enable',
-                            'timestamp': new Date(),
+                            // 'label': 'enable',
+                            // 'timestamp': new Date().toISOString(),
                             'days': '1,2,3,4,5,6,7',
                             'schedule': {
                                 'holidays': []
@@ -342,8 +229,8 @@ let seller_pipeline = async () => {
                 'offers': [],
                 'fulfillments': [
                     {
-                        'id': '1',
-                        'type': 'Delivery',
+                        // 'id': '1',
+                        // 'type': 'Delivery',
                         'contact': {
                             'phone': '$phoneNumber',
                             'email': 'tech@buyume.io'
@@ -352,49 +239,23 @@ let seller_pipeline = async () => {
                 ],
                 'tags': [
                     {
-                        'code': 'timing',
+                        'code': 'serviceability',
                         'list': [
                             {
                                 'code': 'type',
-                                'value': 'Order'
+                                'value': '12'
                             }, {
                                 'code': 'location',
-                                'value': '4d66464d-3ae8-42bd-858f-9e28817c70b4'
+                                'value': 'SALON_ADDRESS'
                             }, {
-                                'code': 'day_from',
-                                'value': '1'
+                                'code': 'category',
+                                'value': "Hair Care"
                             }, {
-                                'code': 'day_to',
-                                'value': '7'
+                                'code': 'unit',
+                                'value': 'country'
                             }, {
-                                'code': 'time_from',
-                                'value': '0800'
-                            }, {
-                                'code': 'time_to',
-                                'value': '2300'
-                            }
-                        ]
-                    }, {
-                        'code': 'timing',
-                        'list': [
-                            {
-                                'code': 'type',
-                                'value': 'Delivery'
-                            }, {
-                                'code': 'location',
-                                'value': '4d66464d-3ae8-42bd-858f-9e28817c70b4'
-                            }, {
-                                'code': 'day_from',
-                                'value': '1'
-                            }, {
-                                'code': 'day_to',
-                                'value': '7'
-                            }, {
-                                'code': 'time_from',
-                                'value': '0800'
-                            }, {
-                                'code': 'time_to',
-                                'value': '2300'
+                                'code': 'val',
+                                'value': 'IND'
                             }
                         ]
                     }
@@ -406,37 +267,31 @@ let seller_pipeline = async () => {
 }
 let context = async (action) => {
     let contextRespose = {
-        "domain": "ONDC:RET13",
-        "location": {
-            "country": {
-                "code": country_code
-            },
-            "city": {
-                "code": city_code
-            }
-        },
+        "domain": domain,
+        "country": country_code,
+        "city": city_code,
         "action": action,
-        "version": "2.0.2",
+        "core_version": "1.1.0",
         "bap_id": "buyer-app-preprod-v2.ondc.org",
         "bap_uri": "https://buyer-app-preprod-v2.ondc.org/protocol/v1",
         "bpp_id": bpp_id,
         "bpp_uri": bpp_uri,
         "transaction_id": transaction_id,
         "message_id": message_id,
-        "timestamp": new Date().toISOString(),
-        "ttl": "PT30S"
+        "timestamp": timeStamp,
+        "ttl": ttl
     }
     return contextRespose
 }
-let catalog = async()=>{
+let catalog = async () => {
     let catalogResponse = {
-        "descriptor": {
+        "bpp/descriptor": {
             "name": "Buyume",
             "symbol": "https://pep1.in/ondc_retail/nav-logo.png",
             "short_desc": "Online eCommerce Store",
             "long_desc": "Online eCommerce Store",
             "images": [
-                { "url": "https://pep1.in/ondc_retail/nav-logo.png" }
+                "https://pep1.in/ondc_retail/nav-logo.png"
             ],
             // "tags": [
             //     {
@@ -450,7 +305,7 @@ let catalog = async()=>{
             //     }
             // ]
         },
-        "fulfillments": [
+        "bpp/fulfillments": [
             {
                 "id": "1",
                 "type": "Delivery"
@@ -458,23 +313,27 @@ let catalog = async()=>{
             {
                 "id": "2",
                 "type": "Self-Pickup"
-            }
-        ],
-        "payments":[
-            {
-                "id":"1",
-                "type":"PRE-FULFILLMENT"
             },
             {
-                "id":"2",
-                "type":"ON-FULFILLMENT"
+                "id": "3",
+                "type": "Delivery and Self-Pickup"
             }
-        ]
+        ],
+        // "payments":[
+        //     {
+        //         "id":"1",
+        //         "type":"PRE-FULFILLMENT"
+        //     },
+        //     {
+        //         "id":"2",
+        //         "type":"ON-FULFILLMENT"
+        //     }
+        // ]
     };
     return catalogResponse;
 }
 
-let order = async()=>{
+let order = async () => {
     let orderResponse = {};
     return orderResponse;
 }
