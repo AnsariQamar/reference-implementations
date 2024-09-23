@@ -4,8 +4,8 @@ const { ObjectId } = mongoose.Types;
 const bpp_id = "prelive.buyume.io";
 const bpp_uri = "https://prelive.buyume.io/ondc";
 const REQUEST_ID = '8ccf209c-a183-41e6-bf97-74053a3a0370';
-const message_id = "7a550f77-054f-4749-b576-5bf19f583d17";
-const transaction_id = "ad5f65ea-0c31-4027-9d6e-5660246651f5";
+const message_id = "1772c64a-0a6d-48bf-9762-7c2053027427";
+const transaction_id = "dd23e065-8906-4075-9ed2-e3f5addf4d48";
 const city_code = "std:080";
 const country_code = "IND";
 const version = "2.0.2";
@@ -272,10 +272,8 @@ let context = async (action) => {
         "city": city_code,
         "action": action,
         "core_version": "1.1.0",
-        "bap_id": "buyer-app-preprod-v2.ondc.org",
-        "bap_uri": "https://buyer-app-preprod-v2.ondc.org/protocol/v1",
-        "bpp_id": bpp_id,
-        "bpp_uri": bpp_uri,
+        "bap_id": "preprod-ondc-buyer.adloggs.com",
+        "bap_uri": "https://preprod-ondc-buyer.adloggs.com/ondcbuyerapi",
         "transaction_id": transaction_id,
         "message_id": message_id,
         "timestamp": timeStamp,
@@ -283,7 +281,7 @@ let context = async (action) => {
     }
     return contextRespose
 }
-let catalog = async () => {
+let on_search_catalog = async () => {
     let catalogResponse = {
         "bpp/descriptor": {
             "name": "Buyume",
@@ -333,8 +331,127 @@ let catalog = async () => {
     return catalogResponse;
 }
 
-let order = async () => {
-    let orderResponse = {};
+let search_intent = async () => {
+    let catalogResponse = {
+        "item": {
+            "descriptor": {
+                "name": "Paytm"
+            }
+        },
+        "fulfillment": {
+            "type": "Delivery",
+            "start": {
+                "location": {
+                    "gps": "12.95622500,77.63648340",
+                    "address": {
+                        "area_code": "560071"
+                    }
+                }
+            },
+            "end": {
+                "location": {
+                    "gps": "12.95680530,77.63706540",
+                    "address": {
+                        "area_code": "560071"
+                    }
+                }
+            }
+        },
+        "payment": {
+            "@ondc/org/buyer_app_finder_fee_type": "percent",
+            "@ondc/org/buyer_app_finder_fee_amount": "5"
+        }
+    };
+    return catalogResponse;
+}
+
+let select_order = async () => {
+    let orderResponse = {
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+            "locations": [
+                {
+                    "id": "SALON_ADDRESS"
+                }
+            ]
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "location_id": "SALON_ADDRESS",
+                "quantity": {
+                    "count": 1
+                }
+            }
+        ],
+        "fulfillments": [
+            {
+                "end": {
+                    "location": {
+                        "gps": "12.95680530,77.63706540",
+                        "address": {
+                            "area_code": "560071"
+                        }
+                    }
+                }
+            }
+        ],
+        // "billing":{
+        //     "tax_number":
+        // }
+    };
+    return orderResponse;
+}
+
+let on_select_resp = async () => {
+    let orderResponse = {
+            "provider": {
+                "id": "61073b09e022eac709348d46",
+                "locations": [
+                    {
+                        "id": "SALON_ADDRESS"
+                    }
+                ]
+            },
+            "items": [
+                {
+                    "id": "66ea637d805c438709fccdf6",
+                    "fulfillment_id": "SALON_ADDRESS",
+                }
+            ],
+            "fulfillments": [
+                {
+                    "id": "SALON_ADDRESS",
+                    "@ondc/org/provider_name": "Trends unisex salon",
+                    "state": {
+                        "descriptor":{
+                            "code":"Serviceable"
+                        }
+                    },
+                    "@ondc/org/category":"Express Delivery",
+                    "@ondc/org/TAT": ttl
+                }
+            ],
+            "quote": {
+                "price": {
+                    "value": "325",
+                    "currency": "INR"
+                },
+                "breakup": [
+                    {
+                        "title": "KELYN NATURALS GOLD FACIAL KIT",
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        },
+                        "@ondc/org/title_type":"item",
+                        "@ondc/org/item_id":"66ea637d805c438709fccdf6"
+                    }
+                ],
+                "ttl":ttl
+    
+            }
+        };
     return orderResponse;
 }
 
@@ -342,6 +459,8 @@ module.exports = {
     product_pipeline,
     seller_pipeline,
     context,
-    catalog,
-    order
+    on_search_catalog,
+    search_intent,
+    select_order,
+    on_select_resp
 }

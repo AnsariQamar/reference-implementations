@@ -22,10 +22,12 @@ let connect = async () => {
 
 const create_flow_file = async () => {
     try {
-        await connect();
+        // await connect();
         console.log("db connected")
-        let search_response = await get_search();
-        await create_on_search(search_response.msg);
+        // let search_response = await get_search();
+        // await create_on_search(search_response.msg);
+        // await get_select();
+        await create_on_select();
         return { success: true, msg: "Done" };
     } catch (er) {
         console.log(er);
@@ -37,13 +39,13 @@ const create_on_search = async (search) => {
         let seller_pipeline = await pipelines.seller_pipeline();
         let product_pipeline = await pipelines.product_pipeline();
         let context = {
-            ...(search.search || await pipelines.context("on_search")),
+            ...(await pipelines.context("on_search")),
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let catalog = await pipelines.catalog();
+        let catalog = await pipelines.on_search_catalog();
         let ondc_response_obj = {
-            "context": search.context,
+            "context": context,
             "message": {
                 "catalog": catalog
             }
@@ -81,20 +83,77 @@ const create_on_search = async (search) => {
 }
 const get_search = async()=>{
     try {
-        let response = await logsCollection.findOne({type:"search"}).sort({createdAt:-1}).lean();
-        let logs = response.logs;
-        logs.context.domain = "nic2004:52110";
-        ondc_response_obj = logs;
+        // let response = await logsCollection.findOne({type:"search"}).sort({createdAt:-1}).lean();
+        // let logs = response.logs;
+        // logs.context.domain = "nic2004:52110";
+        let context = {
+            ...(await pipelines.context("search")),
+            // "bpp_id": bpp_id,
+            // "bpp_uri": bpp_uri,
+        }
+        let intent = await pipelines.search_intent();
+        ondc_response_obj = {
+            "context":context,
+            "message":{
+                "intent":intent
+            }
+        };
         let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/search.json');
         // console.log('destination', destination)
-        // fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
         return { success: true, msg: ondc_response_obj };
     } catch (er) {
         console.log(er);
         return { success: false, msg: "Something Went Wrong" };
     }
 }
-// create_flow_file();
+
+const get_select = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("select")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let order = await pipelines.select_order();
+        ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        };
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/select.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_on_select = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("on_select")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.on_select_resp();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_select.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
 
 module.exports = {
     create_flow_file,
