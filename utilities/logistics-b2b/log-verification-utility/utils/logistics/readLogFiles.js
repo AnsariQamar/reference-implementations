@@ -4,6 +4,7 @@ const { SERVER_LOG_DEST } = require('../constants');
 
 const readLogFiles = async (domain, logPath) => {
   try {
+    console.log(__dirname);
     const files = fs.readdirSync(logPath);
     const firstFileData = fs.readFileSync(
       path.join(

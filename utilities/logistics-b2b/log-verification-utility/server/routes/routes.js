@@ -12,7 +12,7 @@ const validate_schema_for_domain_json = require("../../schema/main");
 const { validateLogs } = require("../../utils/validateLogUtil");
 const readLogFiles = require("../../utils/logistics/readLogFiles");
 // const { logsUpload, logUpload } = require("../utils/fileHandler");
-
+// const { create_flow_file } = require('../../services/flowServices');
 router.get("/", (req, res) => {
   res.json({ msg: "Head over to /validate for route validation" });
 });
@@ -97,7 +97,8 @@ router.post("/validate/:domain", async (req, res) => {
         .json({ msg: `Domain ${domain} not supported yet!` });
 
     /* ------ End of Input validation ------- */
-
+    // const makeFile = await create_flow_file();
+    // return res.json({makeFile});
     const destination = await readLogFiles(domain, logPath);
     await validateLogs(domain, logPath, destination);
     const logReport = JSON.parse(
