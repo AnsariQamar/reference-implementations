@@ -405,53 +405,597 @@ let select_order = async () => {
 
 let on_select_resp = async () => {
     let orderResponse = {
-            "provider": {
-                "id": "61073b09e022eac709348d46",
-                "locations": [
-                    {
-                        "id": "SALON_ADDRESS"
-                    }
-                ]
-            },
-            "items": [
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+            "locations": [
                 {
-                    "id": "66ea637d805c438709fccdf6",
-                    "fulfillment_id": "SALON_ADDRESS",
+                    "id": "SALON_ADDRESS"
+                }
+            ]
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "fulfillment_id": "SALON_ADDRESS",
+            }
+        ],
+        "fulfillments": [
+            {
+                "id": "SALON_ADDRESS",
+                "@ondc/org/provider_name": "Trends unisex salon",
+                "state": {
+                    "descriptor": {
+                        "code": "Serviceable"
+                    }
+                },
+                "@ondc/org/category": "Express Delivery",
+                "@ondc/org/TAT": ttl
+            }
+        ],
+        "quote": {
+            "price": {
+                "value": "325",
+                "currency": "INR"
+            },
+            "breakup": [
+                {
+                    "title": "KELYN NATURALS GOLD FACIAL KIT",
+                    "price": {
+                        "value": "325",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "item",
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
                 }
             ],
-            "fulfillments": [
+            "ttl": ttl
+
+        }
+    };
+    return orderResponse;
+}
+
+const init_order = async () => {
+    let orderResponse = {
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+            "locations": [
                 {
-                    "id": "SALON_ADDRESS",
-                    "@ondc/org/provider_name": "Trends unisex salon",
-                    "state": {
-                        "descriptor":{
-                            "code":"Serviceable"
+                    "id": "SALON_ADDRESS"
+                }
+            ]
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "fulfillment_id": "1",
+                "quantity": {
+                    "count": 1
+                }
+            }
+        ],
+        "billing": {
+            "name": "Paytm",
+            "address": {
+                "name": "Paytm",
+                "building": "10/53 raju partment",
+                "locality": "greater kailash",
+                "city": "Delhi",
+                "state": "New Delhi",
+                "country": "IND",
+                "area_code": "560071"
+            },
+            "phone": "7304569870",
+            "created_at": timeStamp,
+            "updated_at": timeStamp
+        },
+        "fulfillments": [
+            {
+                "id": "1",
+                "type": "Delivery",
+                "end": {
+                    "location": {
+
+                        "gps": "12.95680530,77.63706540",
+                        "address": {
+                            "name": "Paytm",
+                            "building": "10/53 raju partment",
+                            "locality": "greater kailash",
+                            "city": "Delhi",
+                            "state": "New Delhi",
+                            "country": "IND",
+                            "area_code": "560071"
                         }
                     },
-                    "@ondc/org/category":"Express Delivery",
-                    "@ondc/org/TAT": ttl
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                }
+            }
+        ]
+    }
+    return orderResponse;
+}
+
+const on_init_order = async () => {
+    let orderResponse = {
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+        },
+        "provider_location": {
+            "id": "SALON_ADDRESS"
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "fulfillment_id": "1",
+                "quantity": {
+                    "count": 1
+                }
+            }
+        ],
+        "billing": {
+            "name": "Paytm",
+            "address": {
+                "name": "Paytm",
+                "building": "10/53 raju partment",
+                "locality": "greater kailash",
+                "city": "Delhi",
+                "state": "New Delhi",
+                "country": "IND",
+                "area_code": "560071"
+            },
+            "phone": "7304569870",
+            "created_at": timeStamp,
+            "updated_at": timeStamp
+        },
+        "fulfillments": [
+            {
+                "id": "1",
+                "type": "Delivery",
+                "end": {
+                    "location": {
+
+                        "gps": "12.95680530,77.63706540",
+                        "address": {
+                            "name": "Paytm",
+                            "building": "10/53 raju partment",
+                            "locality": "greater kailash",
+                            "city": "Delhi",
+                            "state": "New Delhi",
+                            "country": "IND",
+                            "area_code": "560071"
+                        }
+                    },
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                }
+            }
+        ],
+        "quote": {
+            "price": {
+                "value": "325",
+                "currency": "INR"
+            },
+            "breakup": [
+                {
+                    "title": "KELYN NATURALS GOLD FACIAL KIT",
+                    "price": {
+                        "value": "325",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "item",
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
                 }
             ],
-            "quote": {
-                "price": {
-                    "value": "325",
-                    "currency": "INR"
-                },
-                "breakup": [
-                    {
-                        "title": "KELYN NATURALS GOLD FACIAL KIT",
-                        "price": {
-                            "value": "325",
-                            "currency": "INR"
-                        },
-                        "@ondc/org/title_type":"item",
-                        "@ondc/org/item_id":"66ea637d805c438709fccdf6"
-                    }
-                ],
-                "ttl":ttl
-    
+            "ttl": ttl
+        },
+        "payment": {
+            "@ondc/org/buyer_app_finder_fee_type": "percent",
+            "@ondc/org/buyer_app_finder_fee_amount": "5",
+            "@ondc/org/settlement_details": [
+                {
+                    "settlement_counterparty": "seller-app",
+                    "settlement_phase": "sale-amount",
+                    "settlement_type": "upi",
+                    "upi_address": "7304569870@ybl"
+                }
+            ],
+        }
+    }
+    return orderResponse;
+}
+
+const confirm_order = async () => {
+    let orderResponse = {
+        "id": "BM1000",
+        "state": "Created",
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+            "locations": [
+                {
+                    "id": "SALON_ADDRESS"
+                }
+            ]
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "fulfillment_id": "1",
+                "quantity": {
+                    "count": 1
+                }
             }
-        };
+        ],
+        "billing": {
+            "name": "Paytm",
+            "address": {
+                "name": "Paytm",
+                "building": "10/53 raju partment",
+                "locality": "greater kailash",
+                "city": "Delhi",
+                "state": "New Delhi",
+                "country": "IND",
+                "area_code": "560071"
+            },
+            "phone": "7304569870",
+            "created_at": timeStamp,
+            "updated_at": timeStamp
+        },
+        "fulfillments": [
+            {
+                "id": "1",
+                "type": "Delivery",
+                "end": {
+                    "person": {
+                        "name": "Buyume"
+                    },
+                    "location": {
+
+                        "gps": "12.95680530,77.63706540",
+                        "address": {
+                            "name": "Paytm",
+                            "building": "10/53 raju partment",
+                            "locality": "greater kailash",
+                            "city": "Delhi",
+                            "state": "New Delhi",
+                            "country": "IND",
+                            "area_code": "560071"
+                        }
+                    },
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                }
+            }
+        ],
+        "quote": {
+            "price": {
+                "value": "325",
+                "currency": "INR"
+            },
+            "breakup": [
+                {
+                    "title": "KELYN NATURALS GOLD FACIAL KIT",
+                    "price": {
+                        "value": "325",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "item",
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                }
+            ],
+            "ttl": ttl
+        },
+        "payment": {
+            "status": "PAID",
+            "type": "ON-ORDER",
+            "params": {
+                "amount": "325",
+                "currency": "INR",
+                "transaction_id": "try_iusjwu3j2h3"
+            },
+            "collected_by": "BAP",
+            "@ondc/org/buyer_app_finder_fee_type": "percent",
+            "@ondc/org/buyer_app_finder_fee_amount": "5",
+            "@ondc/org/settlement_details": [
+                {
+                    "settlement_counterparty": "seller-app",
+                    "settlement_phase": "sale-amount",
+                    "settlement_type": "upi",
+                    "upi_address": "7304569870@ybl"
+                }
+            ],
+        },
+        "created_at": timeStamp,
+        "updated_at": timeStamp
+    }
+    return orderResponse;
+}
+
+const on_confirm_order = async () => {
+    let orderResponse = {
+        "id": "BM1000",
+        "state": "Created",
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+            "locations": [
+                {
+                    "id": "SALON_ADDRESS"
+                }
+            ]
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "fulfillment_id": "1",
+                "quantity": {
+                    "count": 1
+                }
+            }
+        ],
+        "billing": {
+            "name": "Paytm",
+            "address": {
+                "name": "Paytm",
+                "building": "10/53 raju partment",
+                "locality": "greater kailash",
+                "city": "Delhi",
+                "state": "New Delhi",
+                "country": "IND",
+                "area_code": "560071"
+            },
+            "phone": "7304569870",
+            "created_at": timeStamp,
+            "updated_at": timeStamp
+        },
+        "fulfillments": [
+            {
+                "id": "1",
+                "@ondc/org/provider_name":"Trends unisex salon",
+                "state":{
+                    "descriptor":{
+                        "code":"Pending"
+                    }
+                },
+                "type": "Delivery",
+                "start": {
+                    // "person": {
+                    //     "name": "Buyume"
+                    // },
+                    "location": {
+                        "id":"SALON_ADDRESS",
+                        "descriptor":{
+                            "name":"Buyume"
+                        },
+                        "gps": "12.95680530,77.63706540",
+                        // "address": {
+                        //     "name": "Paytm",
+                        //     "building": "10/53 raju partment",
+                        //     "locality": "greater kailash",
+                        //     "city": "Delhi",
+                        //     "state": "New Delhi",
+                        //     "country": "IND",
+                        //     "area_code": "560071"
+                        // }
+                    },
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                },
+                "end": {
+                    // "person": {
+                    //     "name": "Buyume"
+                    // },
+                    "location": {
+
+                        "gps": "12.95680530,77.63706540",
+                        "address": {
+                            "name": "Paytm",
+                            "building": "10/53 raju partment",
+                            "locality": "greater kailash",
+                            "city": "Delhi",
+                            "state": "New Delhi",
+                            "country": "IND",
+                            "area_code": "560071"
+                        }
+                    },
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                }
+            }
+        ],
+        "quote": {
+            "price": {
+                "value": "325",
+                "currency": "INR"
+            },
+            "breakup": [
+                {
+                    "title": "KELYN NATURALS GOLD FACIAL KIT",
+                    "price": {
+                        "value": "325",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "item",
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                }
+            ],
+            "ttl": ttl
+        },
+        "payment": {
+            "status": "PAID",
+            "type": "ON-ORDER",
+            "params": {
+                "amount": "325",
+                "currency": "INR",
+                "transaction_id": "try_iusjwu3j2h3"
+            },
+            "collected_by": "BAP",
+            "@ondc/org/buyer_app_finder_fee_type": "percent",
+            "@ondc/org/buyer_app_finder_fee_amount": "5",
+            "@ondc/org/settlement_details": [
+                {
+                    "settlement_counterparty": "seller-app",
+                    "settlement_phase": "sale-amount",
+                    "settlement_type": "upi",
+                    "upi_address": "7304569870@ybl"
+                }
+            ],
+        },
+        "created_at": timeStamp,
+        "updated_at": timeStamp
+    }
+    return orderResponse;
+}
+
+const on_status_order = async()=>{
+    let orderResponse = {
+        "id": "BM1000",
+        "state": "Accepted",
+        "provider": {
+            "id": "61073b09e022eac709348d46",
+            "locations": [
+                {
+                    "id": "SALON_ADDRESS"
+                }
+            ]
+        },
+        "items": [
+            {
+                "id": "66ea637d805c438709fccdf6",
+                "fulfillment_id": "1",
+                "quantity": {
+                    "count": 1
+                }
+            }
+        ],
+        "billing": {
+            "name": "Paytm",
+            "address": {
+                "name": "Paytm",
+                "building": "10/53 raju partment",
+                "locality": "greater kailash",
+                "city": "Delhi",
+                "state": "New Delhi",
+                "country": "IND",
+                "area_code": "560071"
+            },
+            "phone": "7304569870",
+            "created_at": timeStamp,
+            "updated_at": timeStamp
+        },
+        "fulfillments": [
+            {
+                "id": "1",
+                "@ondc/org/provider_name":"Trends unisex salon",
+                "state":{
+                    "descriptor":{
+                        "code":"Pending"
+                    }
+                },
+                "type": "Delivery",
+                "start": {
+                    // "person": {
+                    //     "name": "Buyume"
+                    // },
+                    "location": {
+                        "id":"SALON_ADDRESS",
+                        "descriptor":{
+                            "name":"Buyume"
+                        },
+                        "gps": "12.95680530,77.63706540",
+                        // "address": {
+                        //     "name": "Paytm",
+                        //     "building": "10/53 raju partment",
+                        //     "locality": "greater kailash",
+                        //     "city": "Delhi",
+                        //     "state": "New Delhi",
+                        //     "country": "IND",
+                        //     "area_code": "560071"
+                        // }
+                    },
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                },
+                "end": {
+                    // "person": {
+                    //     "name": "Buyume"
+                    // },
+                    "location": {
+
+                        "gps": "12.95680530,77.63706540",
+                        "address": {
+                            "name": "Paytm",
+                            "building": "10/53 raju partment",
+                            "locality": "greater kailash",
+                            "city": "Delhi",
+                            "state": "New Delhi",
+                            "country": "IND",
+                            "area_code": "560071"
+                        }
+                    },
+                    "contact": {
+                        "phone": "7304569870"
+                    }
+                }
+            }
+        ],
+        "quote": {
+            "price": {
+                "value": "325",
+                "currency": "INR"
+            },
+            "breakup": [
+                {
+                    "title": "KELYN NATURALS GOLD FACIAL KIT",
+                    "price": {
+                        "value": "325",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "item",
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                }
+            ],
+            "ttl": ttl
+        },
+        "payment": {
+            "status": "PAID",
+            "type": "ON-ORDER",
+            "params": {
+                "amount": "325",
+                "currency": "INR",
+                "transaction_id": "try_iusjwu3j2h3"
+            },
+            "collected_by": "BAP",
+            "@ondc/org/buyer_app_finder_fee_type": "percent",
+            "@ondc/org/buyer_app_finder_fee_amount": "5",
+            "@ondc/org/settlement_details": [
+                {
+                    "settlement_counterparty": "seller-app",
+                    "settlement_phase": "sale-amount",
+                    "settlement_type": "upi",
+                    "upi_address": "7304569870@ybl"
+                }
+            ],
+        },
+        "created_at": timeStamp,
+        "updated_at": timeStamp
+    }
+    return orderResponse;
+}
+
+const on_cancel_order = async()=>{
+    let orderResponse = {
+        "id": "BM1000",
+        "state": "Accepted",
+        "tags": {
+            "cancellation_reason_id": "003"
+        }
+    }
     return orderResponse;
 }
 
@@ -462,5 +1006,11 @@ module.exports = {
     on_search_catalog,
     search_intent,
     select_order,
-    on_select_resp
+    on_select_resp,
+    init_order,
+    on_init_order,
+    confirm_order,
+    on_confirm_order,
+    on_status_order,
+    on_cancel_order
 }

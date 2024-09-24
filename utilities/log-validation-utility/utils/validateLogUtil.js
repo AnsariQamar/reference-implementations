@@ -42,25 +42,25 @@ const validateLogs = (dirPath) => {
 
   //SELECT API
 
-  let slctResp = checkSelect(dirPath, msgIdSet);
+  // let slctResp = checkSelect(dirPath, msgIdSet);
 
   //ON_SELECT API
 
-  let onSlctResp = checkOnSelect(dirPath, msgIdSet);
+  // let onSlctResp = checkOnSelect(dirPath, msgIdSet);
 
-  // // //INIT API
+  //INIT API
 
   // let initResp = checkInit(dirPath, msgIdSet);
 
-  // // //ON_INIT API
+  //ON_INIT API
 
   // let onInitResp = checkOnInit(dirPath, msgIdSet);
 
-  // // //CONFIRM API
+  //CONFIRM API
 
   // let cnfrmResp = checkConfirm(dirPath, msgIdSet);
 
-  // // //ON_CONFIRM API
+  // //ON_CONFIRM API
 
   // let onCnfrmResp = checkOnConfirm(dirPath, msgIdSet);
 
@@ -93,11 +93,11 @@ const validateLogs = (dirPath) => {
 
   // // //CANCEL API
 
-  // let cnclResp = checkCancel(dirPath, msgIdSet);
+  let cnclResp = checkCancel(dirPath, msgIdSet);
 
-  // // //ON_CANCEL API
+  // //ON_CANCEL API
 
-  // let onCnclResp = checkOnCancel(dirPath, msgIdSet);
+  let onCnclResp = checkOnCancel(dirPath, msgIdSet);
 
   // // //SUPPORT API
   // let sprtResp = checkSupport(dirPath, msgIdSet);
@@ -122,13 +122,13 @@ const validateLogs = (dirPath) => {
   //   logReport += `**/on_search**\n${getObjValues(onSrchResp)}\n`;
   // }
 
-  if (!_.isEmpty(slctResp)) {
-    logReport += `**/select**\n${getObjValues(slctResp)}\n`;
-  }
+  // if (!_.isEmpty(slctResp)) {
+  //   logReport += `**/select**\n${getObjValues(slctResp)}\n`;
+  // }
 
-  if (!_.isEmpty(onSlctResp)) {
-    logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
-  }
+  // if (!_.isEmpty(onSlctResp)) {
+  //   logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
+  // }
 
   // if (!_.isEmpty(initResp)) {
   //   logReport += `**/init**\n${getObjValues(initResp)}\n`;
@@ -146,13 +146,13 @@ const validateLogs = (dirPath) => {
   //   logReport += `**/on_confirm**\n${getObjValues(onCnfrmResp)}\n`;
   // }
 
-  // if (!_.isEmpty(cnclResp)) {
-  //   logReport += `**/cancel**\n${getObjValues(cnclResp)}\n`;
-  // }
+  if (!_.isEmpty(cnclResp)) {
+    logReport += `**/cancel**\n${getObjValues(cnclResp)}\n`;
+  }
 
-  // if (!_.isEmpty(onCnclResp)) {
-  //   logReport += `**/on_cancel**\n${getObjValues(onCnclResp)}\n`;
-  // }
+  if (!_.isEmpty(onCnclResp)) {
+    logReport += `**/on_cancel**\n${getObjValues(onCnclResp)}\n`;
+  }
 
   // if (!_.isEmpty(trckResp)) {
   //   logReport += `**/track**\n${getObjValues(trckResp)}\n`;

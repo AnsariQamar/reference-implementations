@@ -22,12 +22,20 @@ let connect = async () => {
 
 const create_flow_file = async () => {
     try {
-        // await connect();
+        await connect();
         console.log("db connected")
         // let search_response = await get_search();
         // await create_on_search(search_response.msg);
         // await get_select();
-        await create_on_select();
+        // await create_on_select();
+        // await create_init();
+        // await create_on_init();
+        // await create_confirm();
+        // await create_on_confirm();
+        // await create_status();
+        // await create_on_status();
+        // await create_cancel();
+        await create_on_cancel();
         return { success: true, msg: "Done" };
     } catch (er) {
         console.log(er);
@@ -154,6 +162,189 @@ const create_on_select = async () => {
     }
 }
 
+const create_init = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("init")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.init_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/init.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_on_init = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("on_init")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.on_init_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_init.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_confirm = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("confirm")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.confirm_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/confirm.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_on_confirm = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("on_confirm")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.on_confirm_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_confirm.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_status = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("status")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        // let  order = await pipelines.on_confirm_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order_id":"BM1000"
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/status.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_on_status = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("on_status")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.on_status_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order_id":"BM1000"
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_status.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
+const create_cancel = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("cancel")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.on_status_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order_id":"BM1000",
+                "cancellation_reason_id":"003"
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/cancel.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+const create_on_cancel = async () => {
+    try {
+        let context = {
+            ...(await pipelines.context("on_cancel")),
+            "bpp_id": bpp_id,
+            "bpp_uri": bpp_uri,
+        }
+        let  order = await pipelines.on_cancel_order();
+        let ondc_response_obj = {
+            "context":context,
+            "message":{
+                "order":order
+            }
+        }
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_cancel.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
 
 module.exports = {
     create_flow_file,
