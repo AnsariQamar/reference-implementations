@@ -34,19 +34,19 @@ const validateLogs = (dirPath) => {
 
   // //SEARCH API
 
-  let srchResp = checkSearch(dirPath, msgIdSet);
+  // let srchResp = checkSearch(dirPath, msgIdSet);
 
-  // ON_SEARCH API
+  // // ON_SEARCH API
 
   // let onSrchResp = checkOnSearch(dirPath, msgIdSet);
 
-  // //SELECT API
+  //SELECT API
 
-  // let slctResp = checkSelect(dirPath, msgIdSet);
+  let slctResp = checkSelect(dirPath, msgIdSet);
 
-  // // //ON_SELECT API
+  //ON_SELECT API
 
-  // let onSlctResp = checkOnSelect(dirPath, msgIdSet);
+  let onSlctResp = checkOnSelect(dirPath, msgIdSet);
 
   // // //INIT API
 
@@ -114,21 +114,21 @@ const validateLogs = (dirPath) => {
     logger.error("!!Error while removing LMDB", error);
   }
 
-  if (!_.isEmpty(srchResp)) {
-    logReport += `**/search**\n${getObjValues(srchResp)}\n`;
-  }
+  // if (!_.isEmpty(srchResp)) {
+  //   logReport += `**/search**\n${getObjValues(srchResp)}\n`;
+  // }
 
   // if (!_.isEmpty(onSrchResp)) {
   //   logReport += `**/on_search**\n${getObjValues(onSrchResp)}\n`;
   // }
 
-  // if (!_.isEmpty(slctResp)) {
-  //   logReport += `**/select**\n${getObjValues(slctResp)}\n`;
-  // }
+  if (!_.isEmpty(slctResp)) {
+    logReport += `**/select**\n${getObjValues(slctResp)}\n`;
+  }
 
-  // if (!_.isEmpty(onSlctResp)) {
-  //   logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
-  // }
+  if (!_.isEmpty(onSlctResp)) {
+    logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
+  }
 
   // if (!_.isEmpty(initResp)) {
   //   logReport += `**/init**\n${getObjValues(initResp)}\n`;
