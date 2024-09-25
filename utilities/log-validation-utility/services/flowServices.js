@@ -24,24 +24,52 @@ const create_flow_file = async () => {
     try {
         await connect();
         console.log("db connected")
-        // let search_response = await get_search();
-        // await create_on_search(search_response.msg);
-        // await get_select();
-        // await create_on_select();
-        // await create_init();
-        // await create_on_init();
-        // await create_confirm();
-        // await create_on_confirm();
-        // await create_status();
-        // await create_on_status();
-        // await create_cancel();
-        // await create_on_cancel();
+        let search = await get_search();
+        let on_search = await create_on_search(search.msg);
+        let select = await get_select();
+        let on_select = await create_on_select();
+        let init = await create_init();
+        let on_init = await create_on_init();
+        let confirm = await create_confirm();
+        let on_confirm = await create_on_confirm();
+        let status = await create_status();
+        let on_status = await create_on_status();
+        let cancel = await create_cancel();
+        let on_cancel = await create_on_cancel();
         return { success: true, msg: "Done" };
     } catch (er) {
         console.log(er);
         return { success: false, msg: "Something Went Wrong" };
     }
 }
+
+const get_search = async () => {
+    try {
+        // let response = await logsCollection.findOne({type:"search"}).sort({createdAt:-1}).lean();
+        // let logs = response.logs;
+        // logs.context.domain = "nic2004:52110";
+        let context = {
+            ...(await pipelines.context("search")),
+            // "bpp_id": bpp_id,
+            // "bpp_uri": bpp_uri,
+        }
+        let intent = await pipelines.search_intent();
+        ondc_response_obj = {
+            "context": context,
+            "message": {
+                "intent": intent
+            }
+        };
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/search.json');
+        // console.log('destination', destination)
+        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
+        return { success: true, msg: ondc_response_obj };
+    } catch (er) {
+        console.log(er);
+        return { success: false, msg: "Something Went Wrong" };
+    }
+}
+
 const create_on_search = async (search) => {
     try {
         let seller_pipeline = await pipelines.seller_pipeline();
@@ -65,7 +93,7 @@ const create_on_search = async (search) => {
             sellerCollection.aggregate(seller_pipeline),
             productCollection.aggregate(product_pipeline)
         ])
-        product_details = product_details.map((ele)=>{
+        product_details = product_details.map((ele) => {
             ele['@ondc/org/returnable'] = false;
             ele['@ondc/org/cancellable'] = false;
             ele['@ondc/org/available_on_cod'] = true;
@@ -80,7 +108,7 @@ const create_on_search = async (search) => {
             return obj;
         })
         ondc_response_obj.message.catalog["bpp/providers"] = seller_details;
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_search.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_search.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
         return { success: true, msg: ondc_response_obj };
@@ -89,32 +117,7 @@ const create_on_search = async (search) => {
         return { success: false, msg: "Something Went Wrong" };
     }
 }
-const get_search = async()=>{
-    try {
-        // let response = await logsCollection.findOne({type:"search"}).sort({createdAt:-1}).lean();
-        // let logs = response.logs;
-        // logs.context.domain = "nic2004:52110";
-        let context = {
-            ...(await pipelines.context("search")),
-            // "bpp_id": bpp_id,
-            // "bpp_uri": bpp_uri,
-        }
-        let intent = await pipelines.search_intent();
-        ondc_response_obj = {
-            "context":context,
-            "message":{
-                "intent":intent
-            }
-        };
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/search.json');
-        // console.log('destination', destination)
-        fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
-        return { success: true, msg: ondc_response_obj };
-    } catch (er) {
-        console.log(er);
-        return { success: false, msg: "Something Went Wrong" };
-    }
-}
+
 
 const get_select = async () => {
     try {
@@ -125,12 +128,12 @@ const get_select = async () => {
         }
         let order = await pipelines.select_order();
         ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         };
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/select.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/select.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -146,14 +149,14 @@ const create_on_select = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.on_select_resp();
+        let order = await pipelines.on_select_resp();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_select.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_select.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -169,14 +172,14 @@ const create_init = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.init_order();
+        let order = await pipelines.init_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/init.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/init.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -192,14 +195,14 @@ const create_on_init = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.on_init_order();
+        let order = await pipelines.on_init_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_init.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_init.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -215,14 +218,14 @@ const create_confirm = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.confirm_order();
+        let order = await pipelines.confirm_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/confirm.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/confirm.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -238,14 +241,14 @@ const create_on_confirm = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.on_confirm_order();
+        let order = await pipelines.on_confirm_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_confirm.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_confirm.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -263,12 +266,12 @@ const create_status = async () => {
         }
         // let  order = await pipelines.on_confirm_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order_id":"BM1000"
+            "context": context,
+            "message": {
+                "order_id": "BM1000"
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/status.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/status.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -284,24 +287,24 @@ const create_on_status = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.on_status_order("pending");
+        let order = await pipelines.on_status_order("pending");
         // let  order = await pipelines.on_status_order("picked");
         // let  order = await pipelines.on_status_order("delivered");
 
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
-        let destination_pending = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_status_pending.json');
-        let destination_picked = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_status_picked.json');
-        let destination_delivered = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_status_delivered.json');
+        let destination_pending = path.join(__dirname, '../../../../Buyume/Retail/on_status_pending.json');
+        let destination_picked = path.join(__dirname, '../../../../Buyume/Retail/on_status_picked.json');
+        let destination_delivered = path.join(__dirname, '../../../../Buyume/Retail/on_status_delivered.json');
 
         // console.log('destination', destination)
-        // fs.writeFileSync(destination_pending, JSON.stringify(ondc_response_obj));
-        // fs.writeFileSync(destination_picked, JSON.stringify(ondc_response_obj));
-        // fs.writeFileSync(destination_delivered, JSON.stringify(ondc_response_obj));
+        fs.writeFileSync(destination_pending, JSON.stringify(ondc_response_obj));
+        fs.writeFileSync(destination_picked, JSON.stringify(ondc_response_obj));
+        fs.writeFileSync(destination_delivered, JSON.stringify(ondc_response_obj));
 
     } catch (er) {
         console.log(er);
@@ -316,15 +319,15 @@ const create_cancel = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.on_status_order();
+        // let order = await pipelines.on_status_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order_id":"BM1000",
-                "cancellation_reason_id":"003"
+            "context": context,
+            "message": {
+                "order_id": "BM1000",
+                "cancellation_reason_id": "003"
             }
         }
-        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/cancel.json');
+        let destination = path.join(__dirname, '../../../../Buyume/Retail/cancel.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -339,11 +342,11 @@ const create_on_cancel = async () => {
             "bpp_id": bpp_id,
             "bpp_uri": bpp_uri,
         }
-        let  order = await pipelines.on_cancel_order();
+        let order = await pipelines.on_cancel_order();
         let ondc_response_obj = {
-            "context":context,
-            "message":{
-                "order":order
+            "context": context,
+            "message": {
+                "order": order
             }
         }
         let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_cancel.json');
