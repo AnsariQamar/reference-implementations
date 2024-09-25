@@ -394,6 +394,8 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         (item) => item["@ondc/org/title_type"] === "delivery"
       );
       const noOfDeliveries = deliveryItems.length;
+      console.log('noOfDeliveries', noOfDeliveries)
+      console.log('nonServiceableFlag', nonServiceableFlag)
       if (!noOfDeliveries && !nonServiceableFlag) {
         onSlctObj.deliveryLineItem = `delivery line item must be present in quote/breakup (if location is serviceable)`;
       }
@@ -479,6 +481,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       });
       //saving on select quote
       dao.setValue("quoteObj", on_select.quote);
+      console.log('on_select.quote',on_select.quote)
     } catch (error) {
       logger.error(
         `!!Error while storing quote object in /${constants.RET_ONSELECT}, ${error.stack}`

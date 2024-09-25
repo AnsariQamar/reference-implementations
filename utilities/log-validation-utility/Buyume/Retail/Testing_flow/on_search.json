@@ -149,7 +149,7 @@
                             },
                             "location_id": "SALON_ADDRESS",
                             "fulfillment_id": "1",
-                            "@ondc/org/time_to_ship": "P1D",
+                            "@ondc/org/time_to_ship": "PT5S",
                             "@ondc/org/return_window": "P2D",
                             "@ondc/org/returnable": false,
                             "@ondc/org/cancellable": false,

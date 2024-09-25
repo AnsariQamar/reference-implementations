@@ -34,43 +34,43 @@ const validateLogs = (dirPath) => {
 
   // //SEARCH API
 
-  // let srchResp = checkSearch(dirPath, msgIdSet);
+  let srchResp = checkSearch(dirPath, msgIdSet);
 
   // // ON_SEARCH API
 
-  // let onSrchResp = checkOnSearch(dirPath, msgIdSet);
+  let onSrchResp = checkOnSearch(dirPath, msgIdSet);
 
   //SELECT API
 
-  // let slctResp = checkSelect(dirPath, msgIdSet);
+  let slctResp = checkSelect(dirPath, msgIdSet);
 
   //ON_SELECT API
 
-  // let onSlctResp = checkOnSelect(dirPath, msgIdSet);
+  let onSlctResp = checkOnSelect(dirPath, msgIdSet);
 
   //INIT API
 
-  // let initResp = checkInit(dirPath, msgIdSet);
+  let initResp = checkInit(dirPath, msgIdSet);
 
   //ON_INIT API
 
-  // let onInitResp = checkOnInit(dirPath, msgIdSet);
+  let onInitResp = checkOnInit(dirPath, msgIdSet);
 
   //CONFIRM API
 
-  // let cnfrmResp = checkConfirm(dirPath, msgIdSet);
+  let cnfrmResp = checkConfirm(dirPath, msgIdSet);
 
   // //ON_CONFIRM API
 
-  // let onCnfrmResp = checkOnConfirm(dirPath, msgIdSet);
+  let onCnfrmResp = checkOnConfirm(dirPath, msgIdSet);
 
-  // // //STATUS API
-  // let statResp = checkStatus(dirPath, msgIdSet);
+  // //STATUS API
+  let statResp = checkStatus(dirPath, msgIdSet);
 
-  // // //ON_STATUS API
+  // //ON_STATUS API
 
-  // // let onStatResp = checkOnStatus(dirPath, msgIdSet);
-  // let onStatResp = checkUnsolicitedStatus(dirPath, msgIdSet);
+  // let onStatResp = checkOnStatus(dirPath, msgIdSet);
+  let onStatResp = checkUnsolicitedStatus(dirPath, msgIdSet);
 
   // // //UPDATE API
 
@@ -114,37 +114,37 @@ const validateLogs = (dirPath) => {
     logger.error("!!Error while removing LMDB", error);
   }
 
-  // if (!_.isEmpty(srchResp)) {
-  //   logReport += `**/search**\n${getObjValues(srchResp)}\n`;
-  // }
+  if (!_.isEmpty(srchResp)) {
+    logReport += `**/search**\n${getObjValues(srchResp)}\n`;
+  }
 
-  // if (!_.isEmpty(onSrchResp)) {
-  //   logReport += `**/on_search**\n${getObjValues(onSrchResp)}\n`;
-  // }
+  if (!_.isEmpty(onSrchResp)) {
+    logReport += `**/on_search**\n${getObjValues(onSrchResp)}\n`;
+  }
 
-  // if (!_.isEmpty(slctResp)) {
-  //   logReport += `**/select**\n${getObjValues(slctResp)}\n`;
-  // }
+  if (!_.isEmpty(slctResp)) {
+    logReport += `**/select**\n${getObjValues(slctResp)}\n`;
+  }
 
-  // if (!_.isEmpty(onSlctResp)) {
-  //   logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
-  // }
+  if (!_.isEmpty(onSlctResp)) {
+    logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
+  }
 
-  // if (!_.isEmpty(initResp)) {
-  //   logReport += `**/init**\n${getObjValues(initResp)}\n`;
-  // }
+  if (!_.isEmpty(initResp)) {
+    logReport += `**/init**\n${getObjValues(initResp)}\n`;
+  }
 
-  // if (!_.isEmpty(onInitResp)) {
-  //   logReport += `**/on_init**\n${getObjValues(onInitResp)}\n`;
-  // }
+  if (!_.isEmpty(onInitResp)) {
+    logReport += `**/on_init**\n${getObjValues(onInitResp)}\n`;
+  }
 
-  // if (!_.isEmpty(cnfrmResp)) {
-  //   logReport += `**/confirm**\n${getObjValues(cnfrmResp)}\n`;
-  // }
+  if (!_.isEmpty(cnfrmResp)) {
+    logReport += `**/confirm**\n${getObjValues(cnfrmResp)}\n`;
+  }
 
-  // if (!_.isEmpty(onCnfrmResp)) {
-  //   logReport += `**/on_confirm**\n${getObjValues(onCnfrmResp)}\n`;
-  // }
+  if (!_.isEmpty(onCnfrmResp)) {
+    logReport += `**/on_confirm**\n${getObjValues(onCnfrmResp)}\n`;
+  }
 
   if (!_.isEmpty(cnclResp)) {
     logReport += `**/cancel**\n${getObjValues(cnclResp)}\n`;
@@ -162,24 +162,24 @@ const validateLogs = (dirPath) => {
   //   logReport += `**/on_track**\n${getObjValues(onTrckResp)}\n`;
   // }
 
-  // if (!_.isEmpty(statResp)) {
-  //   logReport += `**/status**\n${getObjValues(statResp)}\n`;
-  // }
-  // if (!_.isEmpty(onStatResp.pending)) {
-  //   logReport += `**/on_status (Pending)**\n${getObjValues(
-  //     onStatResp.pending
-  //   )}\n`;
-  // }
-  // if (!_.isEmpty(onStatResp.picked)) {
-  //   logReport += `**/on_status (Order-picked-up)**\n${getObjValues(
-  //     onStatResp.picked
-  //   )}\n`;
-  // }
-  // if (!_.isEmpty(onStatResp.delivered)) {
-  //   logReport += `**/on_status (Order-Delivered)**\n${getObjValues(
-  //     onStatResp.delivered
-  //   )}\n`;
-  // }
+  if (!_.isEmpty(statResp)) {
+    logReport += `**/status**\n${getObjValues(statResp)}\n`;
+  }
+  if (!_.isEmpty(onStatResp.pending)) {
+    logReport += `**/on_status (Pending)**\n${getObjValues(
+      onStatResp.pending
+    )}\n`;
+  }
+  if (!_.isEmpty(onStatResp.picked)) {
+    logReport += `**/on_status (Order-picked-up)**\n${getObjValues(
+      onStatResp.picked
+    )}\n`;
+  }
+  if (!_.isEmpty(onStatResp.delivered)) {
+    logReport += `**/on_status (Order-Delivered)**\n${getObjValues(
+      onStatResp.delivered
+    )}\n`;
+  }
 
   // if (!_.isEmpty(updtResp)) {
   //   logReport += `**/update**\n${getObjValues(updtResp)}\n`;

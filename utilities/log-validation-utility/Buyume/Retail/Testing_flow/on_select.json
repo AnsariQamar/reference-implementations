@@ -8,8 +8,8 @@
         "bap_id": "preprod-ondc-buyer.adloggs.com",
         "bap_uri": "https://preprod-ondc-buyer.adloggs.com/ondcbuyerapi",
         "transaction_id": "dd23e065-8906-4075-9ed2-e3f5addf4d48",
-        "message_id": "1772c64a-0a6d-48bf-9762-7c2053027427",
-        "timestamp": "2024-09-23T18:32:15.761Z",
+        "message_id": "f69a8c06-a784-43af-b540-b6f4238ad2c6",
+        "timestamp": "2024-09-25T07:25:06.449Z",
         "ttl": "PT30S",
         "bpp_id": "prelive.buyume.io",
         "bpp_uri": "https://prelive.buyume.io/ondc"
@@ -27,12 +27,12 @@
             "items": [
                 {
                     "id": "66ea637d805c438709fccdf6",
-                    "fulfillment_id": "SALON_ADDRESS"
+                    "fulfillment_id": "1"
                 }
             ],
             "fulfillments": [
                 {
-                    "id": "SALON_ADDRESS",
+                    "id": "1",
                     "@ondc/org/provider_name": "Trends unisex salon",
                     "state": {
                         "descriptor": {
@@ -56,7 +56,52 @@
                             "currency": "INR"
                         },
                         "@ondc/org/title_type": "item",
-                        "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                        "@ondc/org/item_id": "66ea637d805c438709fccdf6",
+                        "item": {
+                            "quantity": {
+                                "maximum": {
+                                    "count":"1"
+                                },
+                                "available": {
+                                    "count": "1"
+                                }
+                            },
+                            "price": {
+                                "value": "325",
+                                "currency": "INR"
+                            }
+                        },
+                        "@ondc/org/item_quantity":{
+                            "count":1
+                        }
+                        
+                    },
+                    {
+                        "title": "delivery charges",
+                        "price": {
+                            "value": "0",
+                            "currency": "INR"
+                        },
+                        "@ondc/org/title_type": "delivery",
+                        "@ondc/org/item_id": "1",
+                        "item": {
+                            "quantity": {
+                                "maximum": {
+                                    "count":"1"
+                                },
+                                "available": {
+                                    "count": "1"
+                                }
+                            },
+                            "price": {
+                                "value": "325",
+                                "currency": "INR"
+                            }
+                        },
+                        "@ondc/org/item_quantity":{
+                            "count":1
+                        }
+                        
                     }
                 ],
                 "ttl": "PT30S"

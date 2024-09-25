@@ -4,7 +4,20 @@ const { ObjectId } = mongoose.Types;
 const bpp_id = "prelive.buyume.io";
 const bpp_uri = "https://prelive.buyume.io/ondc";
 const REQUEST_ID = '8ccf209c-a183-41e6-bf97-74053a3a0370';
-const message_id = "1772c64a-0a6d-48bf-9762-7c2053027427";
+const message_id = {
+    "search": "1772c64a-0a6d-48bf-9762-7c2053027427",
+    "on_search": "1772c64a-0a6d-48bf-9762-7c2053027427",
+    "select": "f69a8c06-a784-43af-b540-b6f4238ad2c6",
+    "on_select": "f69a8c06-a784-43af-b540-b6f4238ad2c6",
+    "init": "49d934f2-6e0e-5e00-b715-68baf1dbe981",
+    "on_init": "49d934f2-6e0e-5e00-b715-68baf1dbe981",
+    "confirm": "msgondm_bnvhoatzn4mn_56orfw",
+    "on_confirm": "msgondm_bnvhoatzn4mn_56orfw",
+    "cancel": "de17ebb7-cf1e-48a6-9c7b-ef52ddb3c925",
+    "on_cancel": "de17ebb7-cf1e-48a6-9c7b-ef52ddb3c925",
+    "status": "234c0539-240e-48a8-a6f1-18eef46142f2",
+    "on_status": "234c0539-240e-48a8-a6f1-18eef46142f2"
+}
 const transaction_id = "dd23e065-8906-4075-9ed2-e3f5addf4d48";
 const city_code = "std:080";
 const country_code = "IND";
@@ -95,7 +108,7 @@ let product_pipeline = async () => {
                 'fulfillment_id': '1',
                 // '@ondc/org/cancellable': 'false',
                 // '@ondc/org/available_on_cod': 'true',
-                '@ondc/org/time_to_ship': 'P1D',
+                '@ondc/org/time_to_ship': 'PT5S',
                 '@ondc/org/return_window': 'P2D',
                 // '@ondc/org/seller_pickup_return': 'false'
             }
@@ -266,6 +279,7 @@ let seller_pipeline = async () => {
     return pipeline;
 }
 let context = async (action) => {
+    let messageId = message_id[action];
     let contextRespose = {
         "domain": domain,
         "country": country_code,
@@ -275,7 +289,7 @@ let context = async (action) => {
         "bap_id": "preprod-ondc-buyer.adloggs.com",
         "bap_uri": "https://preprod-ondc-buyer.adloggs.com/ondcbuyerapi",
         "transaction_id": transaction_id,
-        "message_id": message_id,
+        "message_id": messageId,
         "timestamp": timeStamp,
         "ttl": ttl
     }
@@ -416,12 +430,12 @@ let on_select_resp = async () => {
         "items": [
             {
                 "id": "66ea637d805c438709fccdf6",
-                "fulfillment_id": "SALON_ADDRESS",
+                "fulfillment_id": "1",
             }
         ],
         "fulfillments": [
             {
-                "id": "SALON_ADDRESS",
+                "id": "1",
                 "@ondc/org/provider_name": "Trends unisex salon",
                 "state": {
                     "descriptor": {
@@ -445,11 +459,55 @@ let on_select_resp = async () => {
                         "currency": "INR"
                     },
                     "@ondc/org/title_type": "item",
-                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
+                },
+                {
+                    "title": "delivery charges",
+                    "price": {
+                        "value": "0",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "delivery",
+                    "@ondc/org/item_id": "1",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
                 }
             ],
-            "ttl": ttl
-
+            "ttl": "PT30S"
         }
     };
     return orderResponse;
@@ -586,10 +644,55 @@ const on_init_order = async () => {
                         "currency": "INR"
                     },
                     "@ondc/org/title_type": "item",
-                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
+                },
+                {
+                    "title": "delivery charges",
+                    "price": {
+                        "value": "0",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "delivery",
+                    "@ondc/org/item_id": "1",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
                 }
             ],
-            "ttl": ttl
+            "ttl": "PT30S"
         },
         "payment": {
             "@ondc/org/buyer_app_finder_fee_type": "percent",
@@ -683,10 +786,55 @@ const confirm_order = async () => {
                         "currency": "INR"
                     },
                     "@ondc/org/title_type": "item",
-                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
+                },
+                {
+                    "title": "delivery charges",
+                    "price": {
+                        "value": "0",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "delivery",
+                    "@ondc/org/item_id": "1",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
                 }
             ],
-            "ttl": ttl
+            "ttl": "PT30S"
         },
         "payment": {
             "status": "PAID",
@@ -753,10 +901,10 @@ const on_confirm_order = async () => {
         "fulfillments": [
             {
                 "id": "1",
-                "@ondc/org/provider_name":"Trends unisex salon",
-                "state":{
-                    "descriptor":{
-                        "code":"Pending"
+                "@ondc/org/provider_name": "Trends unisex salon",
+                "state": {
+                    "descriptor": {
+                        "code": "Pending"
                     }
                 },
                 "type": "Delivery",
@@ -765,11 +913,11 @@ const on_confirm_order = async () => {
                     //     "name": "Buyume"
                     // },
                     "location": {
-                        "id":"SALON_ADDRESS",
-                        "descriptor":{
-                            "name":"Buyume"
+                        "id": "SALON_ADDRESS",
+                        "descriptor": {
+                            "name": "Buyume"
                         },
-                        "gps": "12.95680530,77.63706540",
+                        "gps": "28.4032527,76.9504511",
                         // "address": {
                         //     "name": "Paytm",
                         //     "building": "10/53 raju partment",
@@ -820,10 +968,55 @@ const on_confirm_order = async () => {
                         "currency": "INR"
                     },
                     "@ondc/org/title_type": "item",
-                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
+                },
+                {
+                    "title": "delivery charges",
+                    "price": {
+                        "value": "0",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "delivery",
+                    "@ondc/org/item_id": "1",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
                 }
             ],
-            "ttl": ttl
+            "ttl": "PT30S"
         },
         "payment": {
             "status": "PAID",
@@ -851,10 +1044,37 @@ const on_confirm_order = async () => {
     return orderResponse;
 }
 
-const on_status_order = async()=>{
+const on_status_order = async (state) => {
+    let orderState = "";
+    let fullfilementState = "";
+    let documents;
+    if (state == "pending") {
+        orderState = "Accepted";
+        fullfilementState = "Pending"
+    }
+    if (state == "picked") {
+        orderState = "In-progress";
+        fullfilementState = "Order-picked-up";
+        documents = [
+            {
+                "url": "https://buyume-app.s3.ap-south-1.amazonaws.com/fcOrderLabels/Label-2876713.pdf",
+                "label": "Invoice"
+            }
+        ]
+    }
+    if (state == "delivered") {
+        orderState = "Completed",
+            fullfilementState = "Order-delivered";
+        documents = [
+            {
+                "url": "https://buyume-app.s3.ap-south-1.amazonaws.com/fcOrderLabels/Label-2876713.pdf",
+                "label": "Invoice"
+            }
+        ]
+    }
     let orderResponse = {
         "id": "BM1000",
-        "state": "Accepted",
+        "state": orderState,
         "provider": {
             "id": "61073b09e022eac709348d46",
             "locations": [
@@ -890,41 +1110,26 @@ const on_status_order = async()=>{
         "fulfillments": [
             {
                 "id": "1",
-                "@ondc/org/provider_name":"Trends unisex salon",
-                "state":{
-                    "descriptor":{
-                        "code":"Pending"
+                "@ondc/org/provider_name": "Trends unisex salon",
+                "state": {
+                    "descriptor": {
+                        "code": fullfilementState
                     }
                 },
                 "type": "Delivery",
                 "start": {
-                    // "person": {
-                    //     "name": "Buyume"
-                    // },
                     "location": {
-                        "id":"SALON_ADDRESS",
-                        "descriptor":{
-                            "name":"Buyume"
+                        "id": "SALON_ADDRESS",
+                        "descriptor": {
+                            "name": "Buyume"
                         },
-                        "gps": "12.95680530,77.63706540",
-                        // "address": {
-                        //     "name": "Paytm",
-                        //     "building": "10/53 raju partment",
-                        //     "locality": "greater kailash",
-                        //     "city": "Delhi",
-                        //     "state": "New Delhi",
-                        //     "country": "IND",
-                        //     "area_code": "560071"
-                        // }
+                        "gps": "28.4032527,76.9504511",
                     },
                     "contact": {
                         "phone": "7304569870"
                     }
                 },
                 "end": {
-                    // "person": {
-                    //     "name": "Buyume"
-                    // },
                     "location": {
 
                         "gps": "12.95680530,77.63706540",
@@ -957,10 +1162,55 @@ const on_status_order = async()=>{
                         "currency": "INR"
                     },
                     "@ondc/org/title_type": "item",
-                    "@ondc/org/item_id": "66ea637d805c438709fccdf6"
+                    "@ondc/org/item_id": "66ea637d805c438709fccdf6",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
+                },
+                {
+                    "title": "delivery charges",
+                    "price": {
+                        "value": "0",
+                        "currency": "INR"
+                    },
+                    "@ondc/org/title_type": "delivery",
+                    "@ondc/org/item_id": "1",
+                    "item": {
+                        "quantity": {
+                            "maximum": {
+                                "count": "1"
+                            },
+                            "available": {
+                                "count": "1"
+                            }
+                        },
+                        "price": {
+                            "value": "325",
+                            "currency": "INR"
+                        }
+                    },
+                    "@ondc/org/item_quantity": {
+                        "count": 1
+                    }
+
                 }
             ],
-            "ttl": ttl
+            "ttl": "PT30S"
         },
         "payment": {
             "status": "PAID",
@@ -985,10 +1235,11 @@ const on_status_order = async()=>{
         "created_at": timeStamp,
         "updated_at": timeStamp
     }
+    if(documents) orderResponse.documents = documents
     return orderResponse;
 }
 
-const on_cancel_order = async()=>{
+const on_cancel_order = async () => {
     let orderResponse = {
         "id": "BM1000",
         "state": "Accepted",
