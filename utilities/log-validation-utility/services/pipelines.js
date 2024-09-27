@@ -1,3 +1,4 @@
+const { times } = require('lodash');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { ObjectId } = mongoose.Types;
@@ -23,259 +24,361 @@ const city_code = "std:080";
 const country_code = "IND";
 const version = "2.0.2";
 const ttl = "PT30S";
-const domain = "nic2004:52110";
+const domain = "ONDC:RET13";
 const timeStamp = new Date().toISOString();
 
 let product_pipeline = async () => {
     let pipeline = [
         {
-            '$match': {
-                'brandId': {
-                    '$in': [
-                        new ObjectId('6539e5f4ccd18dd0dbc4dc79'), new ObjectId('65447bd2c93023787fedfa7c')
-                    ]
-                },
-                'comboProductIds.0': {
-                    '$exists': 0
-                },
-                'weight': {
-                    '$gt': 0
+          '$match': {
+            'brandId': {
+              '$in': [
+                new ObjectId('6539e5f4ccd18dd0dbc4dc79'), new ObjectId('65447bd2c93023787fedfa7c')
+              ]
+            }, 
+            'comboProductIds.0': {
+              '$exists': 0
+            }, 
+            'weight': {
+              '$gt': 0
+            }
+          }
+        }, {
+          '$addFields': {
+            'nameSize': {
+              '$strLenCP': '$name'
+            }, 
+            'des': {
+              '$strLenCP': '$description'
+            }
+          }
+        }, {
+          '$match': {
+            'des': {
+              '$gt': 0
+            }
+          }
+        }, {
+          '$sort': {
+            'des': 1, 
+            'nameSize': 1
+          }
+        }, {
+          '$project': {
+            '_id': 0, 
+            'id': {
+              '$toString': '$_id'
+            }, 
+            'quantity': {
+              'unitized': {
+                'measure': {
+                  'unit': 'gram', 
+                  'value': '10.0'
                 }
-            }
-        }, {
-            '$addFields': {
-                'nameSize': {
-                    '$strLenCP': '$name'
-                },
-                'des': {
-                    '$strLenCP': '$description'
+              }, 
+              'available': {
+                'count': {
+                  '$toString': '99'
                 }
-            }
-        }, {
-            '$match': {
-                'des': {
-                    '$gt': 0
+              }, 
+              'maximum': {
+                'count': {
+                  '$toString': '100'
                 }
-            }
-        }, {
-            '$sort': {
-                'des': 1,
-                'nameSize': 1
-            }
-        }, {
-            '$project': {
-                '_id': 0,
-                'id': {
-                    '$toString': '$_id'
-                },
-                'quantity': {
-                    'available': {
-                        'count': {
-                            '$toString': '100'
-                        }
-                    },
-                    'maximum': {
-                        'count': {
-                            '$toString': '100'
-                        }
-                    }
-                },
-                'category_id': "Hair Care",
-                '@ondc/org/contact_details_consumer_care': 'Sailendra Nagvani,tech@buyume.io,8826345311',
-                'price': {
-                    'currency': 'INR',
+              }
+            }, 
+            'category_id': 'Skin Care - Face Cleansers', 
+            '@ondc/org/contact_details_consumer_care': 'Sailendra Nagvani,tech@buyume.io,8826345311', 
+            'price': {
+              'currency': 'INR', 
+              'value': {
+                '$toString': '$mrp'
+              }, 
+              'maximum_value': {
+                '$toString': '$mrp'
+              }
+            }, 
+            'descriptor': {
+              'name': '$name', 
+              'code': {
+                '$concat': [
+                  '1:', '$EANCode'
+                ]
+              }, 
+              'symbol': {
+                '$arrayElemAt': [
+                  '$images', 0
+                ]
+              }, 
+              'short_desc': '$description', 
+              'long_desc': '$description', 
+              'images': '$images'
+            }, 
+            '@ondc/org/returnable': 'false', 
+            'location_id': 'SALON_ADDRESS', 
+            'fulfillment_id': '1', 
+            '@ondc/org/cancellable': 'false', 
+            '@ondc/org/available_on_cod': 'true', 
+            '@ondc/org/time_to_ship': 'P1D', 
+            'time': {
+              'label': 'enable', 
+              'timestamp': timeStamp
+            }, 
+            '@ondc/org/return_window': 'P2D', 
+            '@ondc/org/seller_pickup_return': 'false', 
+            'tags': [
+              {
+                'code': 'origin', 
+                'list': [
+                  {
+                    'code': 'country', 
+                    'value': 'IND'
+                  }
+                ]
+              }, {
+                'code': 'image', 
+                'list': [
+                  {
+                    'code': 'url', 
                     'value': {
-                        '$toString': '$mrp'
-                    },
-                    'maximum_value': {
-                        '$toString': '$mrp'
+                      '$arrayElemAt': [
+                        '$images', 0
+                      ]
                     }
-                },
-                'descriptor': {
-                    'name': '$name',
-                    'code': '$EANCode',
-                    'symbol': {
-                        '$arrayElemAt': [
-                            '$images', 0
-                        ]
-                    },
-                    'short_desc': '$description',
-                    'long_desc': '$description',
-                    'images': '$images'
-                },
-                // '@ondc/org/returnable': 'false',
-                'location_id': 'SALON_ADDRESS',
-                'fulfillment_id': '1',
-                // '@ondc/org/cancellable': 'false',
-                // '@ondc/org/available_on_cod': 'true',
-                '@ondc/org/time_to_ship': 'PT5S',
-                '@ondc/org/return_window': 'P2D',
-                // '@ondc/org/seller_pickup_return': 'false'
-            }
+                  }
+                ]
+              }, {
+                'code': 'attribute', 
+                'list': [
+                  {
+                    'code': 'brand', 
+                    'value': '$brand'
+                  }
+                ]
+              }
+            ]
+          }
         }, {
-            '$limit': 20
+          '$limit': 20
         }
-    ];
+      ];
     return pipeline;
 }
 let seller_pipeline = async () => {
     let pipeline = [
         {
-            '$match': {
-                '_id': {
-                    '$in': [
-                        new ObjectId('62a03165ced1fb651ad9230c'), new ObjectId('61073b09e022eac709348d46')
-                    ]
-                }
+          '$match': {
+            '_id': {
+              '$in': [
+                new ObjectId('62a03165ced1fb651ad9230c')
+              ]
             }
+          }
         }, {
-            '$addFields': {
-                'orderAddress': {
-                    '$arrayElemAt': [
-                        '$addresses', 0
-                    ]
-                }
+          '$addFields': {
+            'orderAddress': {
+              '$arrayElemAt': [
+                '$addresses', 0
+              ]
             }
+          }
         }, {
-            '$project': {
-                '_id': 0,
-                'id': {
-                    '$toString': '$_id'
-                },
-                'time': {
-                    'label': 'enable',
-                    'timestamp': timeStamp
-                },
-                'descriptor': {
-                    'name': '$businessName',
-                    'symbol': '$profilePic',
-                    'short_desc': 'Salon',
-                    'long_desc': 'Salon',
-                    'images': [
-                        '$profilePic'
-                    ],
-                    // tags: [
-                    //   {
-                    //     code: "bpp_terms",
-                    //     list: [
-                    //       {
-                    //         code: "np_type",
-                    //         value: "MSN"
-                    //       },
-                    //       {
-                    //         code: "accept_bap_terms",
-                    //         value: "Y"
-                    //       },
-                    //       {
-                    //         code: "collect_payment",
-                    //         value: "Y"
-                    //       }
-                    //     ]
-                    //   }
-                    // ]
-                },
-                'ttl': ttl,
-                'locations': [
+          '$project': {
+            '_id': 0, 
+            'id': {
+              '$toString': '$_id'
+            }, 
+            'time': {
+              'label': 'enable', 
+              'timestamp': timeStamp
+            }, 
+            'descriptor': {
+              'name': '$businessName', 
+              'symbol': '$profilePic', 
+              'short_desc': 'Salon', 
+              'long_desc': 'Salon', 
+              'images': [
+                '$profilePic'
+              ], 
+              'tags': [
+                {
+                  'code': 'bpp_terms', 
+                  'list': [
                     {
-                        'id': 'SALON_ADDRESS',
-                        'gps': {
-                            '$concat': [
-                                {
-                                    '$toString': {
-                                        '$arrayElemAt': [
-                                            '$salonCoordinates.coordinates', 1
-                                        ]
-                                    }
-                                }, ',', {
-                                    '$toString': {
-                                        '$arrayElemAt': [
-                                            '$salonCoordinates.coordinates', 0
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        'address': {
-                            'street': '$permanentSalonAddress.address1',
-                            'city': '$permanentSalonAddress.city',
-                            'area_code': '$permanentSalonAddress.postalCode',
-                            'state': '$permanentSalonAddress.state',
-                            // locality: "$permanentSalonAddress.landmark",
-                        },
-                        'circle': {
-                            'gps': {
-                                '$concat': [
-                                    {
-                                        '$toString': {
-                                            '$arrayElemAt': [
-                                                '$salonCoordinates.coordinates', 1
-                                            ]
-                                        }
-                                    }, ',', {
-                                        '$toString': {
-                                            '$arrayElemAt': [
-                                                '$salonCoordinates.coordinates', 0
-                                            ]
-                                        }
-                                    }
-                                ]
-                            },
-                            'radius': {
-                                'unit': 'km',
-                                'value': '10'
-                            }
-                        },
-                        'time': {
-                            // 'label': 'enable',
-                            // 'timestamp': new Date().toISOString(),
-                            'days': '1,2,3,4,5,6,7',
-                            'schedule': {
-                                'holidays': []
-                            },
-                            'range': {
-                                'start': '0800',
-                                'end': '2300'
-                            }
-                        }
+                      'code': 'np_type', 
+                      'value': 'MSN'
                     }
-                ],
-                'offers': [],
-                'fulfillments': [
+                  ]
+                }
+              ]
+            }, 
+            'ttl': 'P1D', 
+            'locations': [
+              {
+                'id': 'SALON_ADDRESS', 
+                'gps': {
+                  '$concat': [
                     {
-                        // 'id': '1',
-                        // 'type': 'Delivery',
-                        'contact': {
-                            'phone': '$phoneNumber',
-                            'email': 'tech@buyume.io'
-                        }
-                    }
-                ],
-                'tags': [
-                    {
-                        'code': 'serviceability',
-                        'list': [
-                            {
-                                'code': 'type',
-                                'value': '12'
-                            }, {
-                                'code': 'location',
-                                'value': 'SALON_ADDRESS'
-                            }, {
-                                'code': 'category',
-                                'value': "Hair Care"
-                            }, {
-                                'code': 'unit',
-                                'value': 'country'
-                            }, {
-                                'code': 'val',
-                                'value': 'IND'
-                            }
+                      '$toString': {
+                        '$arrayElemAt': [
+                          '$salonCoordinates.coordinates', 1
                         ]
+                      }
+                    }, ',', {
+                      '$toString': {
+                        '$arrayElemAt': [
+                          '$salonCoordinates.coordinates', 0
+                        ]
+                      }
                     }
+                  ]
+                }, 
+                'address': {
+                  'street': '$permanentSalonAddress.address1', 
+                  'locality': '$permanentSalonAddress.landmark', 
+                  'city': '$permanentSalonAddress.city', 
+                  'area_code': '560001', 
+                  'state': '$permanentSalonAddress.state'
+                }, 
+                'circle': {
+                  'gps': {
+                    '$concat': [
+                      {
+                        '$toString': {
+                          '$arrayElemAt': [
+                            '$salonCoordinates.coordinates', 1
+                          ]
+                        }
+                      }, ',', {
+                        '$toString': {
+                          '$arrayElemAt': [
+                            '$salonCoordinates.coordinates', 0
+                          ]
+                        }
+                      }
+                    ]
+                  }, 
+                  'radius': {
+                    'unit': 'km', 
+                    'value': '10'
+                  }
+                }, 
+                'time': {
+                  'label': 'enable', 
+                  'timestamp': timeStamp, 
+                  'days': '1,2,3,4,5,6,7', 
+                  'schedule': {
+                    'holidays': []
+                  }, 
+                  'range': {
+                    'start': '0800', 
+                    'end': '2300'
+                  }
+                }
+              }
+            ], 
+            'offers': [], 
+            'fulfillments': [
+              {
+                'id': '1', 
+                'type': 'Delivery', 
+                'contact': {
+                  'phone': '$phoneNumber', 
+                  'email': 'tech@buyume.io'
+                }
+              }
+            ], 
+            'tags': [
+              {
+                'code': 'timing', 
+                'list': [
+                  {
+                    'code': 'type', 
+                    'value': 'Order'
+                  }, {
+                    'code': 'location', 
+                    'value': 'SALON_ADDRESS'
+                  }, {
+                    'code': 'day_from', 
+                    'value': '1'
+                  }, {
+                    'code': 'day_to', 
+                    'value': '7'
+                  }, {
+                    'code': 'time_from', 
+                    'value': '0000'
+                  }, {
+                    'code': 'time_to', 
+                    'value': '2359'
+                  }
                 ]
-            }
+              }, {
+                'code': 'timing', 
+                'list': [
+                  {
+                    'code': 'type', 
+                    'value': 'Delivery'
+                  }, {
+                    'code': 'location', 
+                    'value': 'SALON_ADDRESS'
+                  }, {
+                    'code': 'day_from', 
+                    'value': '1'
+                  }, {
+                    'code': 'day_to', 
+                    'value': '7'
+                  }, {
+                    'code': 'time_from', 
+                    'value': '0000'
+                  }, {
+                    'code': 'time_to', 
+                    'value': '2359'
+                  }
+                ]
+              }, {
+                'code': 'serviceability', 
+                'list': [
+                  {
+                    'code': 'location', 
+                    'value': 'SALON_ADDRESS'
+                  }, {
+                    'code': 'category', 
+                    'value': 'Skin Care - Face Cleansers'
+                  }, {
+                    'code': 'type', 
+                    'value': '10'
+                  }, {
+                    'code': 'val', 
+                    'value': '10'
+                  }, {
+                    'code': 'unit', 
+                    'value': 'km'
+                  }
+                ]
+              }
+            ], 
+            'categories': [
+              {
+                'id': 'SKINCARE1234', 
+                'descriptor': {
+                  'name': 'BPC'
+                }, 
+                'tags': [
+                  { 
+                    'code': 'order', 
+                    'list': [
+                      {
+                        'code': 'location', 
+                        'value': 'SALON_ADDRESS'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         }
-    ];
+      ]
     return pipeline;
 }
 let context = async (action) => {
@@ -285,7 +388,7 @@ let context = async (action) => {
         "country": country_code,
         "city": city_code,
         "action": action,
-        "core_version": "1.1.0",
+        "core_version": "1.2.0",
         "bap_id": "preprod-ondc-buyer.adloggs.com",
         "bap_uri": "https://preprod-ondc-buyer.adloggs.com/ondcbuyerapi",
         "transaction_id": transaction_id,
@@ -305,17 +408,17 @@ let on_search_catalog = async () => {
             "images": [
                 "https://pep1.in/ondc_retail/nav-logo.png"
             ],
-            // "tags": [
-            //     {
-            //         "code": "bpp_terms",
-            //         "list": [
-            //             {
-            //                 "code": "np_type",
-            //                 "value": "MSN"
-            //             }
-            //         ]
-            //     }
-            // ]
+            "tags": [
+                {
+                    "code": "bpp_terms",
+                    "list": [
+                        {
+                            "code": "np_type",
+                            "value": "MSN"
+                        }
+                    ]
+                }
+            ]
         },
         "bpp/fulfillments": [
             {
@@ -325,10 +428,6 @@ let on_search_catalog = async () => {
             {
                 "id": "2",
                 "type": "Self-Pickup"
-            },
-            {
-                "id": "3",
-                "type": "Delivery and Self-Pickup"
             }
         ],
         // "payments":[
@@ -382,7 +481,7 @@ let search_intent = async () => {
 let select_order = async () => {
     let orderResponse = {
         "provider": {
-            "id": "61073b09e022eac709348d46",
+            "id": "62a03165ced1fb651ad9230c",
             "locations": [
                 {
                     "id": "SALON_ADDRESS"
@@ -404,7 +503,7 @@ let select_order = async () => {
                     "location": {
                         "gps": "12.95680530,77.63706540",
                         "address": {
-                            "area_code": "560071"
+                            "area_code": "560001"
                         }
                     }
                 }
@@ -420,7 +519,7 @@ let select_order = async () => {
 let on_select_resp = async () => {
     let orderResponse = {
         "provider": {
-            "id": "61073b09e022eac709348d46",
+            "id": "62a03165ced1fb651ad9230c",
             "locations": [
                 {
                     "id": "SALON_ADDRESS"
@@ -443,7 +542,7 @@ let on_select_resp = async () => {
                     }
                 },
                 "@ondc/org/category": "Express Delivery",
-                "@ondc/org/TAT": ttl
+                "@ondc/org/TAT": "P2D"
             }
         ],
         "quote": {
@@ -463,10 +562,10 @@ let on_select_resp = async () => {
                     "item": {
                         "quantity": {
                             "maximum": {
-                                "count": "1"
+                                "count": "99"
                             },
                             "available": {
-                                "count": "1"
+                                "count": "99"
                             }
                         },
                         "price": {
@@ -490,10 +589,10 @@ let on_select_resp = async () => {
                     "item": {
                         "quantity": {
                             "maximum": {
-                                "count": "1"
+                                "count": "99"
                             },
                             "available": {
-                                "count": "1"
+                                "count": "99"
                             }
                         },
                         "price": {

@@ -24,18 +24,18 @@ const create_flow_file = async () => {
     try {
         await connect();
         console.log("db connected")
-        let search = await get_search();
-        let on_search = await create_on_search(search.msg);
+        // let search = await get_search();
+        // let on_search = await create_on_search(search.msg);
         let select = await get_select();
         let on_select = await create_on_select();
-        let init = await create_init();
-        let on_init = await create_on_init();
-        let confirm = await create_confirm();
-        let on_confirm = await create_on_confirm();
-        let status = await create_status();
-        let on_status = await create_on_status();
-        let cancel = await create_cancel();
-        let on_cancel = await create_on_cancel();
+        // let init = await create_init();
+        // let on_init = await create_on_init();
+        // let confirm = await create_confirm();
+        // let on_confirm = await create_on_confirm();
+        // let status = await create_status();
+        // let on_status = await create_on_status();
+        // let cancel = await create_cancel();
+        // let on_cancel = await create_on_cancel();
         return { success: true, msg: "Done" };
     } catch (er) {
         console.log(er);
@@ -108,7 +108,7 @@ const create_on_search = async (search) => {
             return obj;
         })
         ondc_response_obj.message.catalog["bpp/providers"] = seller_details;
-        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_search.json');
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_search.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
         return { success: true, msg: ondc_response_obj };
@@ -133,7 +133,7 @@ const get_select = async () => {
                 "order": order
             }
         };
-        let destination = path.join(__dirname, '../../../../Buyume/Retail/select.json');
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/select.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -156,7 +156,7 @@ const create_on_select = async () => {
                 "order": order
             }
         }
-        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_select.json');
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_select.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
