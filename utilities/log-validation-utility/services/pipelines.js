@@ -615,7 +615,7 @@ let on_select_resp = async () => {
 const init_order = async () => {
     let orderResponse = {
         "provider": {
-            "id": "61073b09e022eac709348d46",
+            "id": "62a03165ced1fb651ad9230c",
             "locations": [
                 {
                     "id": "SALON_ADDRESS"
@@ -640,7 +640,7 @@ const init_order = async () => {
                 "city": "Delhi",
                 "state": "New Delhi",
                 "country": "IND",
-                "area_code": "560071"
+                "area_code": "560001"
             },
             "phone": "7304569870",
             "created_at": timeStamp,
@@ -661,7 +661,7 @@ const init_order = async () => {
                             "city": "Delhi",
                             "state": "New Delhi",
                             "country": "IND",
-                            "area_code": "560071"
+                            "area_code": "560001"
                         }
                     },
                     "contact": {
@@ -677,10 +677,12 @@ const init_order = async () => {
 const on_init_order = async () => {
     let orderResponse = {
         "provider": {
-            "id": "61073b09e022eac709348d46",
-        },
-        "provider_location": {
-            "id": "SALON_ADDRESS"
+            "id": "62a03165ced1fb651ad9230c",
+            "locations": [
+                {
+                    "id": "SALON_ADDRESS"
+                }
+            ]
         },
         "items": [
             {
@@ -700,7 +702,7 @@ const on_init_order = async () => {
                 "city": "Delhi",
                 "state": "New Delhi",
                 "country": "IND",
-                "area_code": "560071"
+                "area_code": "560001"
             },
             "phone": "7304569870",
             "created_at": timeStamp,
@@ -710,6 +712,7 @@ const on_init_order = async () => {
             {
                 "id": "1",
                 "type": "Delivery",
+                "tracking":true,
                 "end": {
                     "location": {
 
@@ -721,7 +724,7 @@ const on_init_order = async () => {
                             "city": "Delhi",
                             "state": "New Delhi",
                             "country": "IND",
-                            "area_code": "560071"
+                            "area_code": "560001"
                         }
                     },
                     "contact": {
@@ -747,10 +750,10 @@ const on_init_order = async () => {
                     "item": {
                         "quantity": {
                             "maximum": {
-                                "count": "1"
+                                "count": "99"
                             },
                             "available": {
-                                "count": "1"
+                                "count": "99"
                             }
                         },
                         "price": {
@@ -774,10 +777,10 @@ const on_init_order = async () => {
                     "item": {
                         "quantity": {
                             "maximum": {
-                                "count": "1"
+                                "count": "99"
                             },
                             "available": {
-                                "count": "1"
+                                "count": "99"
                             }
                         },
                         "price": {
@@ -804,7 +807,18 @@ const on_init_order = async () => {
                     "upi_address": "7304569870@ybl"
                 }
             ],
-        }
+        },
+        "tags": [
+            {
+                "code": "bpp_terms",
+                "list": [
+                    {
+                        "code": "tax_number",
+                        "value": "07ABHCS6941F1Z5"
+                    }
+                ]
+            }
+        ]
     }
     return orderResponse;
 }

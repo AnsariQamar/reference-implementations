@@ -26,10 +26,10 @@ const create_flow_file = async () => {
         console.log("db connected")
         // let search = await get_search();
         // let on_search = await create_on_search(search.msg);
-        let select = await get_select();
-        let on_select = await create_on_select();
+        // let select = await get_select();
+        // let on_select = await create_on_select();
         // let init = await create_init();
-        // let on_init = await create_on_init();
+        let on_init = await create_on_init();
         // let confirm = await create_confirm();
         // let on_confirm = await create_on_confirm();
         // let status = await create_status();
@@ -179,7 +179,7 @@ const create_init = async () => {
                 "order": order
             }
         }
-        let destination = path.join(__dirname, '../../../../Buyume/Retail/init.json');
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/init.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
@@ -202,7 +202,7 @@ const create_on_init = async () => {
                 "order": order
             }
         }
-        let destination = path.join(__dirname, '../../../../Buyume/Retail/on_init.json');
+        let destination = path.join(__dirname, '../Buyume/Retail/Testing_flow/on_init.json');
         // console.log('destination', destination)
         fs.writeFileSync(destination, JSON.stringify(ondc_response_obj));
     } catch (er) {
